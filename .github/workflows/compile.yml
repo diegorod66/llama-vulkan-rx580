@@ -1,7 +1,6 @@
 name: Build llama.cpp Vulkan
 
 on:
-  workflow_dispatch: {}
   push:
     branches: [main, master]
 
