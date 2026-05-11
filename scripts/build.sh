@@ -20,14 +20,20 @@ INSTALL_DIR="$SCRIPT_DIR/binaries-v2.0.0"
 echo -e "${GREEN}=== llama-vulkan-rx580 :: Build v2.0.0 ===${NC}"
 echo ""
 
-# --- 1. Check prerequisites ---
+# --- 1. Check prerequisites and install glslc ---
 echo -e "${YELLOW}[1/6] Checking prerequisites...${NC}"
-for cmd in cmake make git glslc vulkaninfo; do
+for cmd in cmake make git vulkaninfo; do
     if ! command -v "$cmd" &>/dev/null; then
-        echo -e "${RED}ERROR: $cmd not found. Install build-essential cmake git libvulkan-dev vulkan-tools glslang-tools shaderc lld${NC}"
+        echo -e "${RED}ERROR: $cmd not found. Install build-essential cmake git libvulkan-dev vulkan-tools glslang-tools lld${NC}"
         exit 1
     fi
 done
+
+# Install glslc if not present (needed by cmake FindVulkan)
+if ! command -v glslc &>/dev/null; then
+    echo -e "${YELLOW}  glslc not found, building from shaderc source...${NC}"
+    bash "$SCRIPT_DIR/scripts/install-glslc.sh"
+fi
 echo "  All prerequisites found."
 
 # --- 2. Clone llama.cpp ---

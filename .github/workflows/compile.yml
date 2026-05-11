@@ -18,7 +18,7 @@ jobs:
           sudo apt-get install -y -qq \
             build-essential cmake git \
             libvulkan-dev vulkan-tools \
-            glslang-tools shaderc lld
+            glslang-tools lld
 
       - name: Clone llama.cpp
         run: |
@@ -26,6 +26,9 @@ jobs:
           cd llama.cpp
           echo "Commit: $(git rev-parse HEAD)"
           echo "Date: $(git log -1 --format=%cd)"
+
+      - name: Install glslc from shaderc source
+        run: bash scripts/install-glslc.sh
 
       - name: Apply cooperative matrix patch for Polaris
         run: |
