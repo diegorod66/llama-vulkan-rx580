@@ -29,24 +29,8 @@ jobs:
 
       - name: Apply cooperative matrix patch for Polaris
         run: |
-          PATCH_FILE="llama.cpp/ggml/src/ggml-vulkan/CMakeLists.txt"
-          python3 -c "
-import re, sys
-with open('$PATCH_FILE', 'r') as f:
-    content = f.read()
-if 'cooperative_matrix.*forced OFF' in content:
-    print('Patch already applied, skipping.')
-    sys.exit(0)
-content = re.sub(
-    r'(function\(test_shader_extension_support\s+EXTENSION_NAME\s+TEST_SHADER_FILE\s+RESULT_VARIABLE\))',
-    r'\1\n    if(EXTENSION_NAME MATCHES \"cooperative_matrix\")\n        set(\${RESULT_VARIABLE} OFF PARENT_SCOPE)\n        message(STATUS \"\${EXTENSION_NAME} forced OFF\")\n        return()\n    endif()',
-    content
-)
-with open('$PATCH_FILE', 'w') as f:
-    f.write(content)
-print('Patch applied successfully.')
-"
-          grep -A 10 "function(test_shader_extension_support" "$PATCH_FILE" | head -15
+          python3 scripts/patch-cooperative-matrix.py llama.cpp
+          grep -A 10 "function(test_shader_extension_support" llama.cpp/ggml/src/ggml-vulkan/CMakeLists.txt | head -15
 
       - name: Configure CMake
         run: |

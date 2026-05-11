@@ -50,25 +50,7 @@ echo "  Date:   $LLAMA_DATE"
 
 # --- 3. Apply cooperative matrix patch ---
 echo -e "${YELLOW}[3/6] Applying cooperative_matrix=OFF patch for Polaris...${NC}"
-PATCH_FILE="$LLAMA_DIR/ggml/src/ggml-vulkan/CMakeLists.txt"
-
-python3 -c "
-import re, sys
-with open('$PATCH_FILE', 'r') as f:
-    content = f.read()
-if 'cooperative_matrix.*forced OFF' in content:
-    print('  Patch already applied, skipping.')
-    sys.exit(0)
-# Insert after function declaration line
-content = re.sub(
-    r'(function\(test_shader_extension_support\s+EXTENSION_NAME\s+TEST_SHADER_FILE\s+RESULT_VARIABLE\))',
-    r'\1\n    if(EXTENSION_NAME MATCHES \"cooperative_matrix\")\n        set(\${RESULT_VARIABLE} OFF PARENT_SCOPE)\n        message(STATUS \"\${EXTENSION_NAME} forced OFF\")\n        return()\n    endif()',
-    content
-)
-with open('$PATCH_FILE', 'w') as f:
-    f.write(content)
-print('  Patch applied.')
-"
+python3 "$SCRIPT_DIR/scripts/patch-cooperative-matrix.py" "$LLAMA_DIR"
 
 # --- 4. Configure CMake ---
 echo -e "${YELLOW}[4/6] Configuring CMake...${NC}"
