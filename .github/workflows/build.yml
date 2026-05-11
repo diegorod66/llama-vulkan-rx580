@@ -1,4 +1,4 @@
-name: Build llama.cpp Vulkan
+name: Build llama.cpp Vulkan RX580
 
 on:
   workflow_dispatch:
