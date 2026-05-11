@@ -1,3 +1,0 @@
-Commit: 7d442abf5c6244117fd5a1dc51a5d19f00792491
-Date: Mon May 11 08:01:47 2026 +0300
-GGML Vulkan: ON
