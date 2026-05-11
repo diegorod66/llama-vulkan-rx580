@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main, master]
+    branches: [main, master]
     paths:
       - 'scripts/build.sh'
       - '.github/workflows/build.yml'
