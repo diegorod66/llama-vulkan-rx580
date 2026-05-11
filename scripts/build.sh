@@ -24,7 +24,7 @@ echo ""
 echo -e "${YELLOW}[1/6] Checking prerequisites...${NC}"
 for cmd in cmake make git vulkaninfo; do
     if ! command -v "$cmd" &>/dev/null; then
-        echo -e "${RED}ERROR: $cmd not found. Install build-essential cmake git libvulkan-dev vulkan-tools glslang-tools lld${NC}"
+        echo -e "${RED}ERROR: $cmd not found. Install build-essential cmake git libvulkan-dev vulkan-tools glslang-tools spirv-headers lld${NC}"
         exit 1
     fi
 done
