@@ -1,0 +1,7 @@
+# Build artifacts
+build/
+temp_extract/
+
+# OS
+Thumbs.db
+.DS_Store
