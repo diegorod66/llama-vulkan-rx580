@@ -1,5 +1,7 @@
 # llama-vulkan-rx580
 
+[![Build llama.cpp Vulkan](https://github.com/diegorod66/llama-vulkan-rx580/actions/workflows/compile.yml/badge.svg)](https://github.com/diegorod66/llama-vulkan-rx580/actions/workflows/compile.yml)
+
 **llama.cpp con backend Vulkan optimizado para AMD RX 580 (Polaris).**
 Soporta de 1 a 5 GPUs. Escalable sin recompilar.
 
@@ -29,8 +31,12 @@ llama-vulkan-rx580/
 │   └── uninstall.sh         Desinstalador
 │
 ├── scripts/
-│   ├── build.sh             Compila llama.cpp con parche Polaris
-│   └── package.sh           Empaqueta release para distribuir
+│   ├── build.sh                         Compila llama.cpp con parche Polaris
+│   ├── package.sh                       Empaqueta release para distribuir
+│   ├── patch-cooperative-matrix.py      Parche cooperative_matrix=OFF para Polaris
+│   ├── install-glslc.sh                 Instala wrapper glslc -> glslangValidator
+│   ├── glslc-wrapper.sh                 Wrapper para compatibilidad cmake FindVulkan
+│   └── setup-playwright-mcp.sh          Configura @playwright/mcp para DevTools
 │
 ├── systemd/
 │   └── llama-server.service Template del servicio systemd
@@ -76,6 +82,32 @@ sudo apt install build-essential cmake git libvulkan-dev vulkan-tools lld
 ```
 
 Compila desde el ultimo llama.cpp master con el parche `cooperative_matrix=OFF`.
+
+---
+
+## Chrome DevTools (Playwright MCP)
+
+Para depurar la interfaz web de llama-server desde un agente IA:
+
+```bash
+bash scripts/setup-playwright-mcp.sh
+```
+
+Luego inicia el servidor MCP:
+```bash
+npx @playwright/mcp@latest
+```
+
+Configuracion para el agente:
+```json
+"playwright": {
+  "command": "npx",
+  "args": ["@playwright/mcp@latest"]
+}
+```
+
+Esto expone herramientas de automatizacion de navegador para interactuar con
+`http://localhost:8080` (interfaz web de llama-server).
 
 ---
 
